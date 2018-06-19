@@ -54,7 +54,7 @@ module.exports = class extends Generator {
          prompts.target(this),
          //prompts.configUpdate(this),
          prompts.kubeEndpointList(this),
-         prompts.azureSubList(this),
+         prompts.azureSubInfo(this),
          prompts.tenantId(this),
          prompts.creationMode(this),
          prompts.servicePrincipalId(this),
@@ -73,9 +73,9 @@ module.exports = class extends Generator {
          this.type = util.reconcileValue(cmdLnInput.options.type, answers.type);
          this.queue = util.reconcileValue(cmdLnInput.options.queue, answers.queue);
          this.target = util.reconcileValue(cmdLnInput.options.target, answers.target);
-         this.azureSub = util.reconcileValue(cmdLnInput.options.azureSub, answers.azureSub.name, ``);
-         this.azureSubId = util.reconcileValue(cmdLnInput.options.azureSubId, answers.azureSub.id, ``);
-         this.tenantId = util.reconcileValue(cmdLnInput.options.tenantId, answers.azureSub.tenantId,``);
+         this.azureSub = util.reconcileValue(cmdLnInput.options.azureSub, answers.azureSubInfo.name, ``);
+         this.azureSubId = util.reconcileValue(cmdLnInput.options.azureSubId, answers.azureSubInfo.id, ``);
+         this.tenantId = util.reconcileValue(cmdLnInput.options.tenantId, answers.azureSubInfo.tenantId,``);
          this.kubeEndpoint = util.reconcileValue(cmdLnInput.option.kubeEndpoint, answers.kubeEndpoint, ``);
          this.dockerHost = util.reconcileValue(cmdLnInput.options.dockerHost, answers.dockerHost, ``);
          this.dockerPorts = util.reconcileValue(cmdLnInput.options.dockerPorts, answers.dockerPorts, ``);
@@ -92,7 +92,6 @@ module.exports = class extends Generator {
 
    // 5. Where you write the generator specific files (routes, controllers, etc)
    writing() {
-
       let appName = this.applicationName;
 
       var tokens = {

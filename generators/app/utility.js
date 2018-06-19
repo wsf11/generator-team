@@ -882,6 +882,46 @@ function getAzureSubs(answers) {
                name: sub.displayName,
                value: {
                   name: sub.displayName,
+               }
+            });
+         });
+
+         resolve(result);
+      });
+   });
+}
+
+function getAzureSubInfo(answers) {
+   "use strict";
+
+   var token = encodePat(answers.pat);
+
+   var options = addUserAgent({
+      method: 'GET',
+      headers: {
+         'cache-control': 'no-cache',
+         'content-type': 'application/json',
+         'authorization': `Basic ${token}`
+      },
+      url: `${getFullURL(answers.tfs)}/_apis/distributedtask/serviceendpointproxy/azurermsubscriptions`
+   });
+
+   return new Promise(function (resolve, reject) {
+      request(options, function (e, response, body) {
+         if (e) {
+            reject(e);
+            return;
+         }
+
+         var obj = JSON.parse(body);
+
+         var result = [];
+
+         obj.value.forEach((sub) => {
+            result.push({
+               name: sub.displayName,
+               value: {
+                  name: sub.displayName,
                   id: sub.subscriptionId,
                   tenantId: sub.tenantId,
                }
@@ -1355,5 +1395,6 @@ module.exports = {
    kubeDeployment: kubeDeployment,
    dockerDeployment: dockerDeployment,
    getBuildDefName: getBuildDefName,
-   getReleaseDefName: getReleaseDefName
+   getReleaseDefName: getReleaseDefName,
+   getAzureSubInfo: getAzureSubInfo
 };

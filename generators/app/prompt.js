@@ -238,6 +238,26 @@ function azureSubList(obj) {
       when: answers => {
          var result = util.isPaaS(answers, obj) && obj.options.azureSub === undefined && util.isVSTS(answers.tfs);
 
+         if (result) {
+            obj.log(`  Getting Azure subscriptions...`);
+         }
+
+         return result;
+      }
+   };
+}
+
+function azureSubInfo(obj) {
+   return {
+      name: `azureSubInfo`,
+      type: `list`,
+      store: true,
+      message: `Which Azure subscription would you like to use?`,
+      choices: util.getAzureSubInfo,
+      validate: util.validateAzureSub,
+      when: answers => {
+         var result = util.isPaaS(answers, obj) && obj.options.azureSub === undefined && util.isVSTS(answers.tfs);
+
          if (result || answers.kubeEndpoint) {
             obj.log(`  Getting Azure subscriptions...`);
          }
@@ -517,5 +537,6 @@ module.exports = {
    dockerRegistryPassword: dockerRegistryPassword,
    dockerRegistryUsername: dockerRegistryUsername,
    configUpdate: configUpdate,
-   kubeEndpointList: kubeEndpointList
+   kubeEndpointList: kubeEndpointList,
+   azureSubInfo: azureSubInfo
 };
