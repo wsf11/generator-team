@@ -879,7 +879,12 @@ function getAzureSubs(answers) {
 
          obj.value.forEach((sub) => {
             result.push({
-               name: sub.displayName
+               name: sub.displayName,
+               value: {
+                  name: sub.displayName,
+                  id: sub.subscriptionId,
+                  tenantId: sub.tenantId,
+               }
             });
          });
 

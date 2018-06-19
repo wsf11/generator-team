@@ -238,11 +238,11 @@ function azureSubList(obj) {
       when: answers => {
          var result = util.isPaaS(answers, obj) && obj.options.azureSub === undefined && util.isVSTS(answers.tfs);
 
-         if (result) {
+         if (result || answers.kubeEndpoint) {
             obj.log(`  Getting Azure subscriptions...`);
          }
 
-         return result;
+         return result || answers.kubeEndpoint;
       }
    };
 }

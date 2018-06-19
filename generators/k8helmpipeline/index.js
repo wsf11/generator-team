@@ -52,11 +52,9 @@ module.exports = class extends Generator {
          prompts.applicationName(this),
          prompts.customFolder(this),
          prompts.target(this),
-         prompts.configUpdate(this),
+         //prompts.configUpdate(this),
          prompts.kubeEndpointList(this),
-         prompts.azureSubInput(this),
          prompts.azureSubList(this),
-         prompts.azureSubId(this),
          prompts.tenantId(this),
          prompts.creationMode(this),
          prompts.servicePrincipalId(this),
@@ -75,10 +73,10 @@ module.exports = class extends Generator {
          this.type = util.reconcileValue(cmdLnInput.options.type, answers.type);
          this.queue = util.reconcileValue(cmdLnInput.options.queue, answers.queue);
          this.target = util.reconcileValue(cmdLnInput.options.target, answers.target);
-         this.azureSub = util.reconcileValue(cmdLnInput.options.azureSub, answers.azureSub, ``);
+         this.azureSub = util.reconcileValue(cmdLnInput.options.azureSub, answers.azureSub.name, ``);
+         this.azureSubId = util.reconcileValue(cmdLnInput.options.azureSubId, answers.azureSub.id, ``);
+         this.tenantId = util.reconcileValue(cmdLnInput.options.tenantId, answers.azureSub.tenantId,``);
          this.kubeEndpoint = util.reconcileValue(cmdLnInput.option.kubeEndpoint, answers.kubeEndpoint, ``);
-         this.tenantId = util.reconcileValue(cmdLnInput.options.tenantId, answers.tenantId, ``);
-         this.azureSubId = util.reconcileValue(cmdLnInput.options.azureSubId, answers.azureSubId, ``);
          this.dockerHost = util.reconcileValue(cmdLnInput.options.dockerHost, answers.dockerHost, ``);
          this.dockerPorts = util.reconcileValue(cmdLnInput.options.dockerPorts, answers.dockerPorts, ``);
          this.customFolder = util.reconcileValue(cmdLnInput.options.customFolder, answers.customFolder, ``);
