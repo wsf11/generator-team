@@ -304,11 +304,6 @@ function validateServicePrincipalKey(input) {
    return validateRequired(input, `You must provide a Service Principal Key`);
 }
 
-function validateConfigUpdate(input){
-   let valid = input.toLowerCase() === 'yes' ? input : '';
-   return validateRequired(valid, 'You must configure your Kubernetes endpoint before you answer "Yes". Check docs for more info ');
-}
-
 function validateKubeEndpoint(input) {
    return validateRequired(input, `You must provide a Kubernetes Service Endpoint!`);
 }
@@ -1446,7 +1441,6 @@ module.exports = {
    validateDockerCertificatePath: validateDockerCertificatePath,
    findDockerRegistryServiceEndpoint: findDockerRegistryServiceEndpoint,
    tryFindDockerRegistryServiceEndpoint: tryFindDockerRegistryServiceEndpoint,
-   validateConfigUpdate: validateConfigUpdate,
    getKubeEndpoint: getKubeEndpoint,
    validateKubeEndpoint: validateKubeEndpoint,
    kubeDeployment: kubeDeployment,
