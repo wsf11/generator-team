@@ -884,9 +884,6 @@ function getAzureSubs(answers) {
          obj.value.forEach((sub) => {
             result.push({
                name: sub.displayName,
-               value: {
-                  name: sub.displayName,
-               }
             });
          });
 
@@ -898,9 +895,9 @@ function getAzureSubs(answers) {
 function getAzureSubInfo(answers) {
    "use strict";
 
-   var token = encodePat(answers.pat);
+   let token = encodePat(answers.pat);
 
-   var options = addUserAgent({
+   let options = addUserAgent({
       method: 'GET',
       headers: {
          'cache-control': 'no-cache',
@@ -917,9 +914,9 @@ function getAzureSubInfo(answers) {
             return;
          }
 
-         var obj = JSON.parse(body);
+         let obj = JSON.parse(body);
 
-         var result = [];
+         let result = [];
 
          obj.value.forEach((sub) => {
             result.push({
@@ -1014,7 +1011,6 @@ function createArmEndpoint(args){
       "url": `https://${accountName}.visualstudio.com/${projectName}/_apis/serviceendpoint/endpoints?api-version=4.1-preview.1`,
    };
 
-   let endpointId;
    return new Promise(function (resolve, reject) {
       request(options, function (e, response, body) {
          if (e) {
@@ -1022,7 +1018,7 @@ function createArmEndpoint(args){
             return;
          }
          else if(response.statusCode == 200){
-            endpointId = body['id'];
+            let endpointId = body['id'];
 
             resolve(endpointId);
          }

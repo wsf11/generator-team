@@ -90,8 +90,8 @@ module.exports = class extends Generator {
             queue: _this.queue,
             target: _this.target,
             appName: _this.applicationName,
-            project: _this.applicationName,
-            kubeEndpoint: _this.kubeEndpoint
+            kubeEndpoint: _this.kubeEndpoint,
+            project: _this.applicationName
          };
 
          if (util.isDocker(_this.target)) {
@@ -107,7 +107,7 @@ module.exports = class extends Generator {
 
             util.createArmEndpoint(args)
                .then(function(endpointId) {
-                  console.log("Creating Azure resource manager endpoint was successful");
+                  console.log("Creating Azure Resource Manager endpoint was successful");
                })
                .catch(function(error){
                   console.log(error);

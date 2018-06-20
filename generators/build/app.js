@@ -62,7 +62,8 @@ function run(args, gen, done) {
                "dockerRegistryId": args.dockerRegistryId,
                "buildJson": args.buildJson,
                "target": args.target,
-               "kubeEndpoint": args.kubeEndpoint
+               "kubeEndpoint": args.kubeEndpoint,
+               "target": args.target
             };
             
             findOrCreateBuild(objs, gen, mainSeries);
