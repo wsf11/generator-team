@@ -24,6 +24,9 @@ module.exports = class extends Generator {
       argUtils.pat(this);
       argUtils.customFolder(this);
       argUtils.kubeEndpoint(this);
+      argUtils.azureSub(this);
+      argUtils.azureSubId(this);
+      argUtils.tenantId(this);
    }
 
    // 2. Where you prompt users for options (where you`d call this.prompt())
@@ -61,6 +64,9 @@ module.exports = class extends Generator {
          this.applicationName = util.reconcileValue(cmdLnInput.options.applicationName, answers.applicationName, ``);
          this.dockerRegistryId = util.reconcileValue(cmdLnInput.options.dockerRegistryId, answers.dockerRegistryId, ``);
          this.kubeEndpoint = util.reconcileValue(cmdLnInput.options.kubeEndpoint, answers.kubeEndpoint, ``);
+         this.azureSub = util.reconcileValue(cmdLnInput.options.azureSub, ``,``);
+         this.azureSubId = util.reconcileValue(cmdLnInput.options.azureSubId, ``,``);
+         this.tenantId = util.reconcileValue(cmdLnInput.options.tenantId, ``,``);
       }.bind(this));
    }
 
@@ -92,6 +98,20 @@ module.exports = class extends Generator {
             args.dockerHost = _this.dockerHost;
             args.dockerRegistry = _this.dockerRegistry;
             args.dockerRegistryId = _this.dockerRegistryId;
+         }
+
+         if (util.isKubernetes(_this.target)){
+            args.azureSub = _this.azureSub,
+            args.azureSubId = _this.azureSubId,
+            args.tenantId = _this.tenantId
+
+            util.createArmEndpoint(args)
+               .then(function(endpointId) {
+                  console.log("Creating Azure resource manager endpoint was successful");
+               })
+               .catch(function(error){
+                  console.log(error);
+               });
          }
 
          app.run(args, _this, done);

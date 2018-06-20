@@ -39,6 +39,10 @@ function isDocker(value) {
    return value === `docker` || value === `dockerpaas` || value === `acilinux`;
 }
 
+function isKubernetes(value){
+   return value === `acs` || value === `aks`;
+}
+
 function getDockerRegistryServer(server) {
    let parts = url.parse(server);
 
@@ -923,7 +927,7 @@ function getAzureSubInfo(answers) {
                value: {
                   name: sub.displayName,
                   id: sub.subscriptionId,
-                  tenantId: sub.tenantId,
+                  tenantId: sub.subscriptionTenantId,
                }
             });
          });
@@ -970,6 +974,63 @@ function getKubeEndpoint(answers) {
          });
 
          resolve(result);
+      });
+   });
+}
+
+function createArmEndpoint(args){
+   "use strict";
+
+   let token = encodePat(args.pat);
+   let accountName = args.tfs;
+   let projectName = args.appName;
+   let subscriptionName = args.azureSub;
+   let subscriptionId = args.azureSubId;
+   let tenantId = args.tenantId;
+
+   let json = {
+      'data': {
+        'SubscriptionId': `${subscriptionId}`,
+        'SubscriptionName': `${subscriptionName}`,
+      },
+      'name': `${projectName}-Endpoint`,
+      'type': 'azurerm',
+      'authorization': {
+          'parameters':{
+             'tenantid': `${tenantId}`
+          },
+          'scheme': 'ServicePrincipal'
+      },
+      'isReady': false
+    }
+   
+    let options = {
+      "method": `POST`,
+      "headers": {
+         "Authorization": `Basic ${token}`,
+         "Content-Type": "application/json"
+      },
+      "json": json,
+      "url": `https://${accountName}.visualstudio.com/${projectName}/_apis/serviceendpoint/endpoints?api-version=4.1-preview.1`,
+   };
+
+   let endpointId;
+   return new Promise(function (resolve, reject) {
+      request(options, function (e, response, body) {
+         if (e) {
+            reject(e);
+            return;
+         }
+         else if(response.statusCode == 200){
+            endpointId = body['id'];
+
+            resolve(endpointId);
+         }
+         else{
+            let error = body['body'].message;
+            reject(error);
+            return;
+         }
       });
    });
 }
@@ -1396,5 +1457,7 @@ module.exports = {
    dockerDeployment: dockerDeployment,
    getBuildDefName: getBuildDefName,
    getReleaseDefName: getReleaseDefName,
-   getAzureSubInfo: getAzureSubInfo
+   getAzureSubInfo: getAzureSubInfo,
+   isKubernetes: isKubernetes,
+   createArmEndpoint: createArmEndpoint
 };

@@ -68,6 +68,7 @@ module.exports = class extends Generator {
       ]).then(function (answers) {
          // Transfer answers (answers) to global object (cmdLnInput) for use in the rest
          // of the generator
+         console.log(answers.azureSubInfo.name + " " + answers.azureSubInfo.id + "---" + answers.azureSubInfo.tenantId);
          this.pat = util.reconcileValue(cmdLnInput.options.pat, answers.pat);
          this.tfs = util.reconcileValue(cmdLnInput.options.tfs, answers.tfs);
          this.type = util.reconcileValue(cmdLnInput.options.type, answers.type);
@@ -151,7 +152,6 @@ module.exports = class extends Generator {
    // 7. Where installation are run (npm, bower)
    install() {
       app.acsExtensionsCheckOrInstall(this.tfs, this.pat);
-
       // Based on the users answers compose all the required generators.
       compose.addDockerHost(this);
       compose.addRegistry(this);

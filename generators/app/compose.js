@@ -28,7 +28,11 @@ function addBuild(obj) {
       arguments: [obj.type, obj.applicationName, obj.tfs,
       obj.queue, obj.target,
       obj.dockerHost, obj.dockerRegistry, obj.dockerRegistryId,
+<<<<<<< HEAD
       obj.pat, obj.customFolder, obj.kubeEndpoint
+=======
+      obj.pat, obj.customFolder, obj.azureSub, obj.azureSubId, obj.tenantId
+>>>>>>> fa9e6b8... Added an API call to create an azure resource manager and return the id number
       ]
    });
 }
